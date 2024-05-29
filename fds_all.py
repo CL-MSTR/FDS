@@ -505,6 +505,7 @@ y2 = np.zeros( len(x2), dtype = np.int32)
 x = np.concatenate ([x1 , x2])
 x = x[:, np.newaxis]
 y = np.concatenate ([y1 , y2])
+
 logreg = LogisticRegression()
 logreg.fit(x, y)
 X_test = np.linspace(-5, 10, 300)
@@ -518,3 +519,59 @@ losspred = logreg.predict(X_test2)
 plt.scatter(x.ravel(), y,color = 'black',s = 100, zorder = 20,alpha = 0.03)
 plt.plot(X_test , loss , color = 'blue', linewidth = 3)
 plt.plot(X_test , losspred , color = 'red', linewidth = 3)
+
+#CIA 2
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+#Question 1
+df = pd.read_csv("ipl.csv") #Read csv file
+df1 = df[['WinningTeam', 'Margin', 'WonBy']] #selecting required columns
+df1 = df1[df1['WonBy'] == 'Runs'] #rearranging data
+mean_margin = df1['Margin'].mean() #Finding mean using mean function
+#print(df1.head())
+print(f"Mean = {mean_margin}")
+#Plotting Distribution
+x = df1['Margin']
+plt.hist(x,bins = 30)
+plt.xlabel('Margins')
+plt.ylabel('Frequency')
+plt.title('Distribution')
+plt.show()
+#Question 2
+#Finding Confidence Intervals using scipy.stats
+import scipy.stats as stats
+std_margin = df1['Margin'].std()
+
+x = [0.10,0.05,0.01]
+for i in x:
+  z = stats.norm.ppf(1- i/2)
+  ci = (mean_margin - z * (std_margin / (len(df1['Margin']) ** 0.5)),
+         mean_margin + z * (std_margin / (len(df1['Margin']) ** 0.5)))
+  print(f"90% Confidence Interval: {ci}")
+  #Question 3
+#Confidence Interval by Bootstrapping
+from scipy.stats import bootstrap
+data = (df1['Margin'],)
+
+print("Confidence Intervals using Bootstrap")
+
+x = [0.90,0.95,0.99]
+for i in x:
+  bootstrap_mean = bootstrap(data,np.mean, confidence_level = i, random_state=1, method='percentile')
+  print(f"{i}% {bootstrap_mean.confidence_interval}")
+  #Question 4: Null Hypothesis
+#NULL HYPOTHESIS H0:Let Mean margin of victory is 27
+#We accept null hypothesis if mean is ablove 27
+#else we reject null hypothesis
+
+h0 = 27
+standard_error = np.std(df1['Margin']) / np.sqrt(len(df1['Margin']))
+x = [0.10,0.05,0.01]
+for i in x:
+  z = (mean_margin - h0)/standard_error
+  p = 2 * (1 - stats.norm.cdf(abs(z)))
+  if p < i:
+    print(f"Reject the null hypothesis at the {i}% significance level.")
+  else:
+    print(f"Accept the null hypothesis at the {i}% significance level. ")
