@@ -10,7 +10,7 @@ Original file is located at
 """
 
 # -Assignment 1
-# -Name: Vivesh G
+# -Name: 
 '''
 - Function Name: mean
 - Purpose: To calculate mean of numbers in a list
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
 '''
 Assignment 2: NumPy Exercises
-Name: Vivesh G
+Name: 
 '''
 import numpy as np
 '''
@@ -134,7 +134,7 @@ print(mat_add(vec_3,vec_4))
 print(check(vec_3,vec_4))
 
 # -Assignment 3
-# -Name: Vivesh G
+# -Name: 
 
 import pandas as pd
 import random
