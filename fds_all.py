@@ -377,7 +377,7 @@ Books.head(3)
 Books.describe()
 print(np.median(Books['C']))
 print(np.median(Books['P']))
-plt.boxplot(Books["P"], vert=False) # Box plot of P without outliers
+plt.boxplot(Books["P"], vert=False) # Box plot of P with outliers
 plt.xlabel("Years since publication")
 plt.boxplot(Books["P"], vert=False, showfliers=False) #Boxplot without Outliers
 plt.xlabel("Years since publication")
