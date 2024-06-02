@@ -395,43 +395,45 @@ import numpy as np
 data = pd. read_csv("ACCIDENTS_GU_BCN_2010.csv", encoding='latin -1')
 # Create a new column which is the date
 data['Date'] = data['Dia de mes']. apply ( lambda x: str(x)) + '-' + data['Mes de any']. apply ( lambda x: str(x))
-data2 = data['Date']
-print(data2.head())
-counts2010 = data['Date'].value_counts()
-print (f'2010: Mean {counts2010. mean()}')
+data2 = data['Date'] 
+print(data2.head()) 
+counts2010 = data['Date'].value_counts() #value_count returns how many times each value is repeated in a pd series
+print (f'2010: Mean {counts2010. mean()}') #printing the mean of value count
 data = pd. read_csv("ACCIDENTS_GU_BCN_2013.csv", encoding='latin -1')
 # Create a new column which is the date
 data['Date'] = data['Dia de mes']. apply ( lambda x: str(x)) + '-' + data['Mes de any']. apply ( lambda x: str(x))
 data2 = data['Date']
-counts2013 = data['Date'].value_counts()
-print(f'2013: Mean {counts2013. mean()}')
+counts2013 = data['Date'].value_counts() #value_count returns how many times each value is repeated in a pd series
+print(f'2013: Mean {counts2013. mean()}') #printing the mean of value count
 n = len(counts2013)
 mean = counts2013. mean()
 s = counts2013.std()
-ci = [mean - s*1.96/np.sqrt(n), mean + s*1.96/np.sqrt (n)]
-print (f'2010 accident rate estimate: {counts2010. mean()}')
-print (f'2013 accident rate estimate: {counts2013. mean()}')
-print (f'CI for 2013: {ci}')
+ci = [mean - s*1.96/np.sqrt(n), mean + s*1.96/np.sqrt (n)] #calculating confidence interval using the formula 1.96 represents 95% confidence Interval
+print (f'2010 accident rate estimate: {counts2010. mean()}') #printing mean
+print (f'2013 accident rate estimate: {counts2013. mean()}') #printing mean
+print (f'CI for 2013: {ci}') #printing ci
 m = len(counts2010)
 n = len(counts2013)
-p = (counts2013. mean() - counts2010. mean())
+mean_diff = (counts2013. mean() - counts2010. mean()) #mean difference
 print (f'm: {m}, n: {n}')
-print (f'mean difference: ’ {p}')
-#Pooling Distribution
+print (f'mean difference: ’ {mean_diff}')
+
+#Pooling Distribution 
 x = counts2010
 y = counts2013
-pool = np. concatenate([x, y])
-np.random. shuffle(pool)
+pool = np. concatenate([x, y]) # all values of x and y in a single variable
+np.random. shuffle(pool) #shuffling pool
 import random
 N = 10000 # number of samples
-diff = range (N)
+diff = list(range(N))
 for i in range (N):
-  p1 = np.array([random.choice(pool) for _ in range (n)])
-  p2 = np.array([random.choice(pool) for _ in range (n)])
-  diff[i] = (np.mean(p1) - np.mean(p2))
-  diff2 = np.array(diff)
-  w1 = np.where(diff2 > p)[0]
-print('p-value ( Simulation)=', len(w1)/ float (N),'(', len(w1)/ float (N)*100 ,'%)', 'Difference =', p)
+  p1 = np.array([random.choice(pool) for _ in range (n)]) #selecting random values from the pool
+  p2 = np.array([random.choice(pool) for _ in range (n)]) #selecting random values from the pool
+  diff[i] = (np.mean(p1) - np.mean(p2)) # Difference
+  diff2 = np.array(diff) # converting list to np array
+w1 = np.where(diff2 > mean_diff)[0] # selecting all values from diff2 where value > p . p is the null hypothesis here mean_diff
+# p- value is the len(w1) i.e all values greater than mean_diff divided by total number of values N
+print('p-value ( Simulation)=', len(w1)/ float (N),'(', len(w1)/ float (N)*100 ,'%)', 'Difference =', mean_diff) 
 if ( len(w1)/ float (N)) < 0.05:
   print ('The effect is likely')
 else :
