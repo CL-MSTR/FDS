@@ -294,9 +294,9 @@ std_s2 = np.std(sample2)
 mean_s3 = np.mean(sample3)
 std_s3 = np.std(sample3)
 
-print(f"Sample1 mean ={mean_s1}, dtandard deviation = {std_s1}")
-print(f"Sample2 mean ={mean_s2}, dtandard deviation = {std_s2}")
-print(f"Sample3 mean ={mean_s3}, dtandard deviation = {std_s3}")
+print(f"Sample1 mean ={mean_s1}, standard deviation = {std_s1}")
+print(f"Sample2 mean ={mean_s2}, standard deviation = {std_s2}")
+print(f"Sample3 mean ={mean_s3}, standard deviation = {std_s3}")
 
 n = 5
 sample = np.random.normal(loc = 100, scale = 15, size = 5)
